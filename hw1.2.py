@@ -5,37 +5,41 @@ import numpy as np
 def nothing(x):
     pass
 
-
 img = cv2.imread('space.jpg')
 img = cv2.resize(img, None, None, .5, .5, interpolation=cv2.INTER_LINEAR)
-# cv2.resize(img, (.5, .5))
 rows, cols, he = img.shape
 cv2.namedWindow('image')
 cv2.createTrackbar('test', 'image', 0, 360, nothing)
+color = (0, 255, 0)
+thickness = 9
 
+
+
+# cv2.resize(img, (.5, .5))
+    #
+    # k = cv2.waitKey(1) & 0xFF
+    # if k == ord('e'):
+    #     break
 while True:
 
+    x = cv2.getTrackbarPos('test', 'image')
+    matrix = cv2.getRotationMatrix2D((cols / 2, rows / 2), x, .5)
+    start_point = (1, 1)
+    y = np.matrix('[1; 1; 1]')
+    end_point = np.matmul(matrix, y)
+    rotated_img = cv2.warpAffine(img, matrix, (cols, rows))
+    rotated_img = cv2.resize(rotated_img, None, None, 1, 1, interpolation=cv2.INTER_LINEAR)
+    cv2.line(rotated_img, start_point, (int(end_point[0]/2 + rows/4), int(end_point[1]/2 + cols/16)), color, thickness)
+    both = np.hstack((img, rotated_img))
     k = cv2.waitKey(1) & 0xFF
     if k == ord('e'):
         break
-    color = (0, 255, 0)
-    thickness = 9
-    x = cv2.getTrackbarPos('test', 'image')
-    start_point = (0, 0)
-    M = cv2.getRotationMatrix2D((cols / 2, rows / 2), x, 1)
-    print(M)
-    end_point = (540, 304)
-    rotated_img = cv2.warpAffine(img, M, (cols, rows))
-    cv2.line(rotated_img, start_point, end_point, color, thickness)
-    both = np.hstack((img, rotated_img))
+
     cv2.imshow('image', both)
 
-k = cv2.waitKey(0)
-if k == ord('e'):
-    cv2.destroyAllWindows()
     # k = cv2.waitKey(0)
     # if k == ord('e'):  # wait for 'e' key to exit
-    #     cv2.destroyAllWindows()
+cv2.destroyAllWindows()
 
 # num_rows, num_cols = img.shape[:2]
 # cv2.namedWindow('frame')

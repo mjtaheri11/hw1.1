@@ -1,10 +1,10 @@
 import cv2
 
 
-cap = cv2.VideoCapture(0)
 # if (cap.isOpened() == False):
 #      print("Unable to read camera feed")
 
+cap = cv2.VideoCapture(0)
 frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
 out = cv2.VideoWriter('outpy.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 10, (frame_width, frame_height))
