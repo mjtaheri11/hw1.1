@@ -5,6 +5,7 @@ import numpy as np
 def nothing(x):
     pass
 
+
 img = cv2.imread('space.jpg')
 img = cv2.resize(img, None, None, .5, .5, interpolation=cv2.INTER_LINEAR)
 rows, cols, he = img.shape
@@ -13,13 +14,6 @@ cv2.createTrackbar('test', 'image', 0, 360, nothing)
 color = (0, 255, 0)
 thickness = 9
 
-
-
-# cv2.resize(img, (.5, .5))
-    #
-    # k = cv2.waitKey(1) & 0xFF
-    # if k == ord('e'):
-    #     break
 while True:
 
     x = cv2.getTrackbarPos('test', 'image')
@@ -29,17 +23,18 @@ while True:
     end_point = np.matmul(matrix, y)
     rotated_img = cv2.warpAffine(img, matrix, (cols, rows))
     rotated_img = cv2.resize(rotated_img, None, None, 1, 1, interpolation=cv2.INTER_LINEAR)
-    cv2.line(rotated_img, start_point, (int(end_point[0]/2 + rows/4), int(end_point[1]/2 + cols/16)), color, thickness)
+    #img = cv2.resize(img, None, None, .5, .5, interpolation=cv2.INTER_LINEAR)
     both = np.hstack((img, rotated_img))
+    cv2.line(both, start_point, (int(end_point[0]  + img.shape[1]), int(end_point[1])), color, thickness)
     k = cv2.waitKey(1) & 0xFF
     if k == ord('e'):
         break
 
     cv2.imshow('image', both)
 
+cv2.destroyAllWindows()
     # k = cv2.waitKey(0)
     # if k == ord('e'):  # wait for 'e' key to exit
-cv2.destroyAllWindows()
 
 # num_rows, num_cols = img.shape[:2]
 # cv2.namedWindow('frame')
